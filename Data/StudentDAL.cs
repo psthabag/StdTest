@@ -18,16 +18,26 @@ namespace StdTest.Data
 
         // Method to Get all students from Database
         [Obsolete]
-        public IEnumerable<Students> GetAllStudents()
+        public IEnumerable<Students> GetAllStudents(int id)
         {
+            int limit = 6;
             List<Students> students = new List<Students>();
-
+            int start = (id-1)*limit;
+            int recCount = 0;
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 conn.Open();
-                using (SqlCommand cmd = new SqlCommand("SELECT * FROM Students", conn))
+
+                string cntSql = "SELECT COUNT(*) FROM Students";
+                SqlCommand cmdRow = new SqlCommand(cntSql, conn);
+                recCount = (int)cmdRow.ExecuteScalar();
+                string getAll = "SELECT * FROM Students ORDER BY StudentId OFFSET @Start ROWS FETCH NEXT @limit ROWS ONLY";
+                SqlCommand cmd = new SqlCommand(getAll, conn);
+                cmd.Parameters.AddWithValue("@Start", start);
+                cmd.Parameters.AddWithValue("@Limit", limit);
+                //using (SqlCommand cmd = new SqlCommand("SELECT * FROM Students", conn))
                 //using (SqlCommand cmd = new SqlCommand("SELECT TOP (6) * FROM Students", conn))
-                //using (SqlCommand cmd = new SqlCommand("SELECT * FROM Students ORDER BY StudentId OFFSET @Pg ROWS FETCH NEXT 6 ROWS ONLY", conn))
+                //using (SqlCommand cmd = new SqlCommand("SELECT * FROM Students ORDER BY StudentId OFFSET 6 ROWS FETCH NEXT 6 ROWS ONLY", conn))
                 {
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
@@ -75,6 +85,21 @@ namespace StdTest.Data
             }
 
             return student;
+        }
+
+        // Method to Get specific student from Database
+        public void DelStudentById(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                conn.Open();
+                string sql = "DELETE FROM Students WHERE StudentId = @Id";
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.ExecuteNonQuery(); // Execute deletion
+                }
+            }
         }
 
         // Method to Insert a Student in Database

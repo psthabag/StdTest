@@ -14,9 +14,9 @@ namespace StdTest.Controllers
         }
 
         // Action to display all students
-        public IActionResult Index()
+        public IActionResult Index(int id)
         {
-            var students = _studentRepo.GetAllStudents();
+            var students = _studentRepo.GetAllStudents(id);
             return View(students);
         }
 
@@ -46,6 +46,11 @@ namespace StdTest.Controllers
             return View(student);
         }
 
+        public IActionResult Delete(int id)
+        {
+            _studentRepo.DelStudentById(id);
+            return RedirectToAction("Index");
+        }
         public IActionResult View(int id)
         {
             var student = _studentRepo.GetStudentById(id);

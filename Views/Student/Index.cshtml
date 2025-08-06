@@ -23,8 +23,9 @@
                 <td>@student.Address</td>
                 <td>@student.Mobile</td>
                 <td>
-                    <a asp-controller="Student" asp-action="View" asp-route-id="@student.StudentId" class="btn btn-primary">View</a>
-                    <a asp-controller="Student" asp-action="Edit" asp-route-id="@student.StudentId" class="btn btn-primary">Edit</a>
+                    <a asp-controller="Student" asp-action="View" asp-route-id="@student.StudentId"><i class="fa-solid fa-eye"></i></a>&nbsp;&nbsp;
+                    <a asp-controller="Student" asp-action="Edit" asp-route-id="@student.StudentId"><i class="fa-solid fa-pen-to-square"></i></a>&nbsp;&nbsp;
+                    <a asp-controller="Student" asp-action="Delete" asp-route-id="@student.StudentId"><i class="fa-solid fa-trash-can"></i></a>
                 </td>
             </tr>
         }
@@ -33,14 +34,14 @@
 <nav aria-label="...">
     <ul class="pagination">
         <li class="page-item">
-            <a class="page-link" asp-controller="Student" asp-action="Index">1</a>
+            <a class="page-link" asp-controller="Student" asp-action="Index" asp-route-id=1>1</a>
         </li>
         <li class="page-item">
-            <a class="page-link" asp-controller="Student" asp-action="Index">2</a>
+            <a class="page-link" asp-controller="Student" asp-action="Index" asp-route-id=2>2</a>
         </li>
         <li class="page-item">
-            <a class="page-link" asp-controller="Student" asp-action="Index">3</a>
+            <a class="page-link" asp-controller="Student" asp-action="Index" asp-route-id=3>3</a>
         </li>
     </ul>
 </nav>
-<a href="@Url.Action("AddStudentForm")" class="btn btn-primary">Add New Student</a>
+<a href="@Url.Action("AddStudentForm")" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i>&nbsp;Add New Student</a>
