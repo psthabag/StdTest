@@ -1,0 +1,46 @@
+﻿@model IEnumerable<StdTest.Models.Students>
+
+<h2>Student List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th width="100px">SN</th>
+            <th>Name</th>
+            <th>Last Name</th>
+            <th>Address</th>
+            <th>Mobile</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.StudentId</td>
+                <td>@student.Name</td>
+                <td>@student.lName</td>
+                <td>@student.Address</td>
+                <td>@student.Mobile</td>
+                <td>
+                    <a asp-controller="Student" asp-action="View" asp-route-id="@student.StudentId" class="btn btn-primary">View</a>
+                    <a asp-controller="Student" asp-action="Edit" asp-route-id="@student.StudentId" class="btn btn-primary">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<nav aria-label="...">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" asp-controller="Student" asp-action="Index">1</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" asp-controller="Student" asp-action="Index">2</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" asp-controller="Student" asp-action="Index">3</a>
+        </li>
+    </ul>
+</nav>
+<a href="@Url.Action("AddStudentForm")" class="btn btn-primary">Add New Student</a>
