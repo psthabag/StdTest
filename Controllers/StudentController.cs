@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using StdTest.Data;
 using StdTest.Models;
 using System.Data.SqlClient;
@@ -7,15 +8,31 @@ namespace StdTest.Controllers
     public class StudentController : Controller
     {
         private readonly StudentDAL _studentRepo;
-
-        public StudentController(StudentDAL studentRepo)
+        private readonly string _connectionString;
+        public StudentController(StudentDAL studentRepo, IConfiguration configuration)
         {
             _studentRepo = studentRepo;
+            _connectionString = configuration.GetConnectionString("MyConnection");
         }
 
+
         // Action to display all students
-        public IActionResult Index(int id)
+        public IActionResult Index(int id=1)
         {
+            int limit = 6;
+            int recCount = 0;
+
+            SqlConnection con = new SqlConnection(_connectionString);
+            con.Open();
+            using (SqlCommand countCmd = new SqlCommand("SELECT COUNT(*) FROM Students", con))
+            {
+                recCount = (int)countCmd.ExecuteScalar();
+
+                int noOfPage = (int)Math.Ceiling((double)recCount / limit);
+
+                ViewBag.TotalPages = noOfPage;
+
+            }
             var students = _studentRepo.GetAllStudents(id);
             return View(students);
         }

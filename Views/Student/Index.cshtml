@@ -33,15 +33,14 @@
 </table>
 <nav aria-label="...">
     <ul class="pagination">
-        <li class="page-item">
-            <a class="page-link" asp-controller="Student" asp-action="Index" asp-route-id=1>1</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" asp-controller="Student" asp-action="Index" asp-route-id=2>2</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" asp-controller="Student" asp-action="Index" asp-route-id=3>3</a>
-        </li>
+        @{
+            for(int p=1; p<=@ViewBag.TotalPages;p++)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Student" asp-action="Index" asp-route-id=@p>@p</a>
+                </li>
+            }
+        }
     </ul>
 </nav>
 <a href="@Url.Action("AddStudentForm")" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i>&nbsp;Add New Student</a>

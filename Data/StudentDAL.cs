@@ -23,15 +23,12 @@ namespace StdTest.Data
             int limit = 6;
             List<Students> students = new List<Students>();
             int start = (id-1)*limit;
-            int recCount = 0;
+            
+
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 conn.Open();
-
-                string cntSql = "SELECT COUNT(*) FROM Students";
-                SqlCommand cmdRow = new SqlCommand(cntSql, conn);
-                recCount = (int)cmdRow.ExecuteScalar();
-                string getAll = "SELECT * FROM Students ORDER BY StudentId OFFSET @Start ROWS FETCH NEXT @limit ROWS ONLY";
+                string getAll = "SELECT * FROM Students ORDER BY StudentId OFFSET @Start ROWS FETCH NEXT @Limit ROWS ONLY";
                 SqlCommand cmd = new SqlCommand(getAll, conn);
                 cmd.Parameters.AddWithValue("@Start", start);
                 cmd.Parameters.AddWithValue("@Limit", limit);
